@@ -100,13 +100,13 @@
 <meta property="og:site_name" content="Cong&#39;s Blog">
 <meta property="og:description" content="CPU缓存到多级缓存的演进： 为什么需要CPU cache：CPU的频率很快，主存无法跟上它的速度，这样在处理器时钟周期内，CPU常常需要等待主存，浪费资源。所以cache的出现，是为了缓解CPU与内存之间速度不匹配的问题（结构：cpu-&amp;gt;cache-&amp;gt;meoory）.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/eUbMUXQ.png">
-<meta property="og:image" content="https://i.imgur.com/s7JjoZr.png">
-<meta property="og:updated_time" content="2018-08-07T16:49:09.510Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512220711.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512220726.png">
+<meta property="og:updated_time" content="2019-05-12T14:07:35.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="缓存一致性分析">
 <meta name="twitter:description" content="CPU缓存到多级缓存的演进： 为什么需要CPU cache：CPU的频率很快，主存无法跟上它的速度，这样在处理器时钟周期内，CPU常常需要等待主存，浪费资源。所以cache的出现，是为了缓解CPU与内存之间速度不匹配的问题（结构：cpu-&amp;gt;cache-&amp;gt;meoory）.">
-<meta name="twitter:image" content="https://i.imgur.com/eUbMUXQ.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512220711.png">
 
 
 
@@ -459,13 +459,13 @@
       
 
       
-        <p>CPU缓存到多级缓存的演进：<br><img src="https://i.imgur.com/eUbMUXQ.png" alt></p>
+        <p>CPU缓存到多级缓存的演进：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512220711.png" alt></p>
 <h2 id="为什么需要CPU-cache："><a href="#为什么需要CPU-cache：" class="headerlink" title="为什么需要CPU cache："></a>为什么需要CPU cache：</h2><p>CPU的频率很快，主存无法跟上它的速度，这样在处理器时钟周期内，CPU常常需要等待主存，浪费资源。所以cache的出现，是为了缓解CPU与内存之间速度不匹配的问题（结构：cpu-&gt;cache-&gt;meoory）.<br><a id="more"></a></p>
 <h2 id="CPU-cache的意义："><a href="#CPU-cache的意义：" class="headerlink" title="CPU cache的意义："></a>CPU cache的意义：</h2><p>（1）时间局部性：如果某个数据被访问，那么在不久的将来它很可能被再次访问<br>（2）空间局部性：如果某个数据被访问，那么与它相邻的数据很快也可能被访问</p>
 <h2 id="缓存一致性（MESI）："><a href="#缓存一致性（MESI）：" class="headerlink" title="缓存一致性（MESI）："></a>缓存一致性（MESI）：</h2><ul>
 <li>用于保证多个CPU cache之间缓存共享数据的一致</li>
 </ul>
-<p><img src="https://i.imgur.com/s7JjoZr.png" alt></p>
+<p><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512220726.png" alt></p>
 <p><strong>MESI</strong>（Modified Exclusive Shared Or Invalid）(也称为伊利诺斯协议，是因为该协议由伊利诺斯州立大学提出）是一种广泛使用的支持写回策略的缓存一致性协议</p>
 <p><strong>MESI协议中的状态</strong></p>
 <p>CPU中每个缓存行（caceh line)使用4种状态进行标记（使用额外的两位(bit)表示):</p>
@@ -560,8 +560,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/10/java并发容器合集/" rel="next" title="Java高并发容器合集">
-                <i class="fa fa-chevron-left"></i> Java高并发容器合集
+              <a href="/2018/04/01/常见排序算法总结/" rel="next" title="常见排序算法总结">
+                <i class="fa fa-chevron-left"></i> 常见排序算法总结
               </a>
             
           </div>
@@ -682,7 +682,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -827,7 +827,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共56.2k字</span>
+  <span class="post-count">博客全站共54.0k字</span>
 </div>
 
         

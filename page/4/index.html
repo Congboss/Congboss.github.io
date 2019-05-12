@@ -339,175 +339,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.congboss.top/2017/12/29/二叉树锯齿形遍历/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="钱聪">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cong's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/12/29/二叉树锯齿形遍历/" itemprop="url">
-                  二叉树锯齿形遍历
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T11:00:42+08:00">
-                2017-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/12/29/二叉树锯齿形遍历/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://www.congboss.top/2017/12/29/二叉树锯齿形遍历/" class="cy_cmt_count" data-xid="2017/12/29/二叉树锯齿形遍历/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/2017/12/29/二叉树锯齿形遍历/" class="leancloud_visitors" data-flag-title="二叉树锯齿形遍历">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">热度 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-				 <span>℃</span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) &#123;       </span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; wrapList=<span class="keyword">new</span> LinkedList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> wrapList;</span><br><span class="line">        <span class="keyword">boolean</span> flag=<span class="keyword">true</span>;</span><br><span class="line">        Queue&lt;TreeNode&gt; queue=<span class="keyword">new</span> LinkedList&lt;TreeNode&gt;();</span><br><span class="line">        queue.offer(root);</span><br><span class="line">      </span><br><span class="line">        <span class="keyword">while</span>(!queue.isEmpty())</span><br><span class="line">        &#123;         </span><br><span class="line">              <span class="keyword">int</span> level=queue.size();</span><br><span class="line">            List&lt;Integer&gt; subList=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">             </span><br><span class="line">       </span><br><span class="line">             </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;level;i++)</span><br><span class="line">            &#123;</span><br><span class="line">                 TreeNode n=queue.poll();</span><br><span class="line">                    <span class="keyword">if</span>(flag)</span><br><span class="line">            &#123;</span><br><span class="line">                subList.add(n.val);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                subList.add(<span class="number">0</span>,n.val);</span><br><span class="line">            &#125;</span><br><span class="line">                        <span class="keyword">if</span>(n.left!=<span class="keyword">null</span>)</span><br><span class="line">                        queue.offer(n.left);</span><br><span class="line">                         <span class="keyword">if</span>(n.right!=<span class="keyword">null</span>)</span><br><span class="line">                        queue.offer(n.right);</span><br><span class="line">                &#125;</span><br><span class="line">            flag=flag?<span class="keyword">false</span>:<span class="keyword">true</span>;</span><br><span class="line">            wrapList.add(subList);</span><br><span class="line">        &#125;</span><br><span class="line">          <span class="keyword">return</span> wrapList;</span><br><span class="line">        &#125;     </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>注意：用好poll和peek的区别~</p>
-
-          
-        
-      
-    </div>
-<div>
-      
-</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://www.congboss.top/2017/12/27/计算机网络传输层/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1374,174 +1205,6 @@ Explanation: 342 + 465 = 807.
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.congboss.top/2017/12/19/中序和后序遍历构造二叉树/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="钱聪">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cong's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/12/19/中序和后序遍历构造二叉树/" itemprop="url">
-                  中序和后序遍历构造二叉树
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T11:00:42+08:00">
-                2017-12-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2017/12/19/中序和后序遍历构造二叉树/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://www.congboss.top/2017/12/19/中序和后序遍历构造二叉树/" class="cy_cmt_count" data-xid="2017/12/19/中序和后序遍历构造二叉树/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/2017/12/19/中序和后序遍历构造二叉树/" class="leancloud_visitors" data-flag-title="中序和后序遍历构造二叉树">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">热度 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-				 <span>℃</span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Given inorder and postorder traversal of a tree, construct the binary tree.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">buildTree</span><span class="params">(<span class="keyword">int</span>[] inorder, <span class="keyword">int</span>[] postorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=inorder.length-<span class="number">1</span>;</span><br><span class="line">      <span class="keyword">if</span>(inorder.length!=postorder.length)</span><br><span class="line">      &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line">        <span class="keyword">return</span> helpbuild(inorder,<span class="number">0</span>,n,postorder,<span class="number">0</span>,n);</span><br><span class="line">    &#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> TreeNode <span class="title">helpbuild</span><span class="params">(<span class="keyword">int</span> []inorder,<span class="keyword">int</span> inLow,<span class="keyword">int</span> inHigh,<span class="keyword">int</span> [] postorder,<span class="keyword">int</span> postLow,<span class="keyword">int</span> postHigh)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(inLow&gt;inHigh||postLow&gt;postHigh)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">          TreeNode root=<span class="keyword">new</span> TreeNode(postorder[postHigh]);</span><br><span class="line">          <span class="keyword">int</span> inroot=intLow;</span><br><span class="line">          </span><br><span class="line">         <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;inorder.length;i++)</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">if</span>(inorder[i]==root.val)     </span><br><span class="line">            &#123;</span><br><span class="line">                    inroot=i;                       </span><br><span class="line">            &#125;               </span><br><span class="line">          &#125;  </span><br><span class="line">          <span class="keyword">int</span> leftLen=inroot-inLow;</span><br><span class="line">          root.left=helpbuild(inorder,inLow,inroot-<span class="number">1</span>,postorder,postLow,postLow+leftLen-<span class="number">1</span>);</span><br><span class="line">          root.right=helpbuild(inorder,inroot+<span class="number">1</span>,inHigh,postorder,postLow+leftLen,postHigh-<span class="number">1</span>);<span class="comment">//注意取值，结合实例</span></span><br><span class="line">          <span class="keyword">return</span> root;</span><br><span class="line">        &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-<div>
-      
-</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://www.congboss.top/2017/12/19/合并K个排序链表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1666,6 +1329,174 @@ Explanation: 342 + 465 = 807.
           
             <p>Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeKLists</span><span class="params">(ListNode[] lists)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(lists==<span class="keyword">null</span>||lists.length==<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        PriorityQueue&lt;ListNode&gt; queue=<span class="keyword">new</span> PriorityQueue&lt;ListNode&gt;(lists.length,<span class="keyword">new</span> Comparator&lt;ListNode&gt;()&#123;  </span><br><span class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(ListNode o1,ListNode o2)</span></span></span><br><span class="line"><span class="function">           </span>&#123;</span><br><span class="line">               <span class="keyword">if</span>(o1.val&lt;o2.val)</span><br><span class="line">                   <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(o1.val&gt;o2.val)</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">              <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">        </span><br><span class="line">        ListNode dummy=<span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode tail=dummy;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(ListNode node:lists)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(node!=<span class="keyword">null</span>)</span><br><span class="line">                queue.add(node);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!queue.isEmpty())</span><br><span class="line">        &#123;</span><br><span class="line">            tail.next=queue.poll();</span><br><span class="line">            tail=tail.next;</span><br><span class="line">            <span class="keyword">if</span>(tail.next!=<span class="keyword">null</span>)</span><br><span class="line">                queue.add(tail.next);</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">return</span> dummy.next;                                            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>思路：<br>使用了优先权队列，采取了最小堆的策略，每次队列弹出的都是最小的数据。</p>
+
+          
+        
+      
+    </div>
+<div>
+      
+</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.congboss.top/2017/12/19/中序和后序遍历构造二叉树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="钱聪">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/12/19/中序和后序遍历构造二叉树/" itemprop="url">
+                  中序和后序遍历构造二叉树
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T11:00:42+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/12/19/中序和后序遍历构造二叉树/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://www.congboss.top/2017/12/19/中序和后序遍历构造二叉树/" class="cy_cmt_count" data-xid="2017/12/19/中序和后序遍历构造二叉树/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/12/19/中序和后序遍历构造二叉树/" class="leancloud_visitors" data-flag-title="中序和后序遍历构造二叉树">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+				 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Given inorder and postorder traversal of a tree, construct the binary tree.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">buildTree</span><span class="params">(<span class="keyword">int</span>[] inorder, <span class="keyword">int</span>[] postorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=inorder.length-<span class="number">1</span>;</span><br><span class="line">      <span class="keyword">if</span>(inorder.length!=postorder.length)</span><br><span class="line">      &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line">        <span class="keyword">return</span> helpbuild(inorder,<span class="number">0</span>,n,postorder,<span class="number">0</span>,n);</span><br><span class="line">    &#125;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> TreeNode <span class="title">helpbuild</span><span class="params">(<span class="keyword">int</span> []inorder,<span class="keyword">int</span> inLow,<span class="keyword">int</span> inHigh,<span class="keyword">int</span> [] postorder,<span class="keyword">int</span> postLow,<span class="keyword">int</span> postHigh)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(inLow&gt;inHigh||postLow&gt;postHigh)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">          TreeNode root=<span class="keyword">new</span> TreeNode(postorder[postHigh]);</span><br><span class="line">          <span class="keyword">int</span> inroot=intLow;</span><br><span class="line">          </span><br><span class="line">         <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;inorder.length;i++)</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">if</span>(inorder[i]==root.val)     </span><br><span class="line">            &#123;</span><br><span class="line">                    inroot=i;                       </span><br><span class="line">            &#125;               </span><br><span class="line">          &#125;  </span><br><span class="line">          <span class="keyword">int</span> leftLen=inroot-inLow;</span><br><span class="line">          root.left=helpbuild(inorder,inLow,inroot-<span class="number">1</span>,postorder,postLow,postLow+leftLen-<span class="number">1</span>);</span><br><span class="line">          root.right=helpbuild(inorder,inroot+<span class="number">1</span>,inHigh,postorder,postLow+leftLen,postHigh-<span class="number">1</span>);<span class="comment">//注意取值，结合实例</span></span><br><span class="line">          <span class="keyword">return</span> root;</span><br><span class="line">        &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -2042,6 +1873,175 @@ Explanation: 342 + 465 = 807.
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.congboss.top/2017/12/15/Construct Binary Tree from Preorder and Inorder Traversal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="钱聪">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/12/15/Construct Binary Tree from Preorder and Inorder Traversal/" itemprop="url">
+                  Construct Binary Tree from Preorder and Inorder Traversal
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T22:20:42+08:00">
+                2017-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/12/15/Construct Binary Tree from Preorder and Inorder Traversal/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://www.congboss.top/2017/12/15/Construct Binary Tree from Preorder and Inorder Traversal/" class="cy_cmt_count" data-xid="2017/12/15/Construct Binary Tree from Preorder and Inorder Traversal/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/12/15/Construct Binary Tree from Preorder and Inorder Traversal/" class="leancloud_visitors" data-flag-title="Construct Binary Tree from Preorder and Inorder Traversal">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+				 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">buildTree</span><span class="params">(<span class="keyword">int</span>[] preorder, <span class="keyword">int</span>[] inorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=preorder.length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(preorder.length!=inorder.length)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> buildHelp(preorder,<span class="number">0</span>,n,inorder,<span class="number">0</span>,n);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">buildHelp</span><span class="params">(<span class="keyword">int</span> [] preorder,<span class="keyword">int</span> preLow,<span class="keyword">int</span> preHigh,<span class="keyword">int</span> [] inorder,<span class="keyword">int</span> inLow,<span class="keyword">int</span> inHigh)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(preLow&gt;preHigh||inLow&gt;inHigh)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        TreeNode root=<span class="keyword">new</span> TreeNode(preorder[preLow]);</span><br><span class="line">        <span class="keyword">int</span> inRoot=inLow;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;inorder.length;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(inorder[i]==root.val)</span><br><span class="line">            &#123;</span><br><span class="line">                inRoot=i;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> leftTreeLen=inRoot-inLow;</span><br><span class="line">        root.left=buildHelp(preorder,preLow+<span class="number">1</span>,preLow+leftTreeLen,inorder,inLow,inRoot-<span class="number">1</span>);</span><br><span class="line">        root.right=buildHelp(preorder,preLow+leftTreeLen+<span class="number">1</span>,preHigh,inorder,inRoot+<span class="number">1</span>,inHigh);</span><br><span class="line">        <span class="keyword">return</span> root;         </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+<div>
+      
+</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -2089,7 +2089,7 @@ Explanation: 342 + 465 = 807.
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2218,7 +2218,7 @@ Explanation: 342 + 465 = 807.
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共56.2k字</span>
+  <span class="post-count">博客全站共54.0k字</span>
 </div>
 
         

@@ -100,12 +100,12 @@
 <meta property="og:site_name" content="Cong&#39;s Blog">
 <meta property="og:description" content="什么是『事务』？事务就是一组具有原子性的操作，这一组操作要么全都正确执行，要么全都不执行。事务能保证数据库从一种一致性状态转换为另一种一致性状态。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/zlGMule.png">
-<meta property="og:updated_time" content="2018-03-20T12:47:34.870Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512222144.png">
+<meta property="og:updated_time" content="2019-05-12T14:21:54.810Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库事务详解">
 <meta name="twitter:description" content="什么是『事务』？事务就是一组具有原子性的操作，这一组操作要么全都正确执行，要么全都不执行。事务能保证数据库从一种一致性状态转换为另一种一致性状态。">
-<meta name="twitter:image" content="https://i.imgur.com/zlGMule.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512222144.png">
 
 
 
@@ -519,7 +519,7 @@
 <li>不可重复读<br>不可重复度的含义：一个事务对同一行数据读了两次，却得到了不同的结果。它具体分为如下两种情况：<br><strong>1. 虚读：</strong>在事务1两次读取同一记录的过程中，事务2对该记录进行了修改，从而事务1第二次读到了不一样的记录。<br><strong>2. 幻读：</strong>事务1在两次查询的过程中，事务2对该表进行了插入、删除操作，从而事务1第二次查询的结果发生了变化。</li>
 </ol>
 <h2 id="与『脏读』的区别？"><a href="#与『脏读』的区别？" class="headerlink" title="与『脏读』的区别？ "></a>与『脏读』的区别？ </h2><p>脏读读到的是尚未提交的数据，而不可重复读读到的是已经提交的数据，只不过在两次读的过程中数据被另一个事务改过了。</p>
-<h2 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h2><p>数据库事务的隔离级别有4个，由低到高依次为Read uncommitted 、Read committed 、Repeatable read 、Serializable ，这四个级别可以逐个解决脏读 、不可重复读 、幻读 这几类问题。<br><img src="https://i.imgur.com/zlGMule.png" alt></p>
+<h2 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h2><p>数据库事务的隔离级别有4个，由低到高依次为Read uncommitted 、Read committed 、Repeatable read 、Serializable ，这四个级别可以逐个解决脏读 、不可重复读 、幻读 这几类问题。<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512222144.png" alt></p>
 <ol>
 <li>Read uncommitted 读未提交</li>
 </ol>
@@ -751,7 +751,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -896,7 +896,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共56.2k字</span>
+  <span class="post-count">博客全站共54.0k字</span>
 </div>
 
         

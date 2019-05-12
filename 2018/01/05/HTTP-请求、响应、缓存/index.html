@@ -100,13 +100,13 @@
 <meta property="og:site_name" content="Cong&#39;s Blog">
 <meta property="og:description" content="HTTP请求格式做过Socket编程的人都知道，当我们设计一个通信协议时，“消息头/消息体”的分割方式是很常用的，消息头告诉对方这个消息是干什么的，消息体告诉对方怎么干。HTTP协议传输的消息也是这样规定的，每一个HTTP包都分为HTTP头和HTTP体两部分，消息体是可选的，而消息头是必须的。每当我们打开一个网页，在上面点击右键，选择“查看源文件”，这时看到的HTML代码就是HTTP的消息体，那">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/Ex6FMZH.png">
-<meta property="og:image" content="https://i.imgur.com/b27PQyK.jpg">
-<meta property="og:updated_time" content="2018-08-04T17:17:06.655Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512223507.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512223809.png">
+<meta property="og:updated_time" content="2019-05-12T14:38:27.645Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP-请求、响应、缓存">
 <meta name="twitter:description" content="HTTP请求格式做过Socket编程的人都知道，当我们设计一个通信协议时，“消息头/消息体”的分割方式是很常用的，消息头告诉对方这个消息是干什么的，消息体告诉对方怎么干。HTTP协议传输的消息也是这样规定的，每一个HTTP包都分为HTTP头和HTTP体两部分，消息体是可选的，而消息头是必须的。每当我们打开一个网页，在上面点击右键，选择“查看源文件”，这时看到的HTML代码就是HTTP的消息体，那">
-<meta name="twitter:image" content="https://i.imgur.com/Ex6FMZH.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512223507.png">
 
 
 
@@ -471,7 +471,7 @@
 <p>下面是一个HTTP请求的数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST /index.php HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:10.0.2) Gecko/20100101 Firefox/10.0.2</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-cn,zh;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Referer: http://localhost/</span><br><span class="line">Content-Length：25</span><br><span class="line">Content-Type：application/x-www-form-urlencoded</span><br><span class="line"> </span><br><span class="line">username=aa&amp;password=1234</span><br></pre></td></tr></table></figure></p>
 <h2 id="1、请求行：请求方法URI协议-版本"><a href="#1、请求行：请求方法URI协议-版本" class="headerlink" title="1、请求行：请求方法URI协议/版本"></a>1、请求行：请求方法URI协议/版本</h2><p>请求的第一行是“方法 URL  协议/版本”，并以 回车换行作为结尾。请求行以空格分隔。格式如下：<br>POST /index.php HTTP/1.1<br>以上代码中“GET”代表请求方法，“//ndex.php”表示URI，“HTTP/1.1代表协议和协议的版本。<br>根据HTTP标准，HTTP请求可以使用多种请求方法。例如：HTTP1.1支持7种请求方法：GET、POST、HEAD、OPTIONS、PUT、DELETE和TARCE。在Internet应用中，最常用的方法是GET和POST。<br>URL完整地指定了要访问的网络资源，通常只要给出相对于服务器的根目录的相对目录即可，因此总是以“/”开头，最后，协议版本声明了通信过程中使用HTTP的版本。 </p>
 <p><strong>请求方法</strong><br>在 HTTP 协议中，HTTP 请求可以使用多种请求方法，这些方法指明了要以何种方式来访问 Request-URI 所标识的资源。HTTP1.1 支持的请求方法如下表所示：</p>
-<p>HTTP1.1 中的请求方式：<br><img src="https://i.imgur.com/Ex6FMZH.png" alt></p>
+<p>HTTP1.1 中的请求方式：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512223507.png" alt></p>
 <p>重点介绍 GET、POST 和 HEAD 三个方法：</p>
 <p><strong>（1）GET</strong></p>
 <p> GET 方法用于获取由 Request-URI 所标识的资源的信息，常见的形式是：</p>
@@ -667,7 +667,7 @@
 </li>
 <li><p>再次请求：当浏览器再次请求的时候，请求头附带Expires，Cache-Control，If-Modified-Since/Etag向服务器请求</p>
 </li>
-<li><p>服务器根据第一次记录的Last-Modified/Etag和再次请求的If-Modified-Since/Etag做对比，判断是否需要更新，服务器通过这两个头判断本地资源未发生变化，客 户端不需要重新下载，返回304响应。常见流程如下图所示：<br><img src="https://i.imgur.com/b27PQyK.jpg" alt><br><strong>与缓存相关的HTTP扩展消息头</strong><br><strong> Expires：</strong>设置页面过期时间，格林威治时间GMT</p>
+<li><p>服务器根据第一次记录的Last-Modified/Etag和再次请求的If-Modified-Since/Etag做对比，判断是否需要更新，服务器通过这两个头判断本地资源未发生变化，客 户端不需要重新下载，返回304响应。常见流程如下图所示：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512223809.png" alt><br><strong>与缓存相关的HTTP扩展消息头</strong><br><strong> Expires：</strong>设置页面过期时间，格林威治时间GMT</p>
 </li>
 </ol>
 <p><strong>Cache-Control：</strong>更细致的控制缓存的内容</p>
@@ -871,7 +871,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1016,7 +1016,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共56.2k字</span>
+  <span class="post-count">博客全站共54.0k字</span>
 </div>
 
         

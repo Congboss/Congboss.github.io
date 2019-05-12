@@ -100,14 +100,14 @@
 <meta property="og:site_name" content="Cong&#39;s Blog">
 <meta property="og:description" content="登录与登出是非常普遍的功能，传统的后台管理系统会在初始化时在数据库中插入超级管理员的初始用户名和密码，后续再由超级管理员添加普通管理员并设置他们的密码。再然后普通管理人员在登录界面输入用户名和密码完成登录。    微信扫码登录时查询openid并与数据库中有权限的openid比较，如果比对成功，就放行。 登录：验证身份，存储信息登出：失效浏览信息 什么是分布式系统？旨在支持应用程序和服务的开发，可">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/vXQnzVe.png">
-<meta property="og:image" content="https://i.imgur.com/78jtv2D.png">
-<meta property="og:image" content="https://i.imgur.com/0LnLEIN.jpg">
-<meta property="og:updated_time" content="2018-06-17T16:03:55.409Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512221822.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512221835.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512221849.png">
+<meta property="og:updated_time" content="2019-05-12T14:19:09.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式session">
 <meta name="twitter:description" content="登录与登出是非常普遍的功能，传统的后台管理系统会在初始化时在数据库中插入超级管理员的初始用户名和密码，后续再由超级管理员添加普通管理员并设置他们的密码。再然后普通管理人员在登录界面输入用户名和密码完成登录。    微信扫码登录时查询openid并与数据库中有权限的openid比较，如果比对成功，就放行。 登录：验证身份，存储信息登出：失效浏览信息 什么是分布式系统？旨在支持应用程序和服务的开发，可">
-<meta name="twitter:image" content="https://i.imgur.com/vXQnzVe.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512221822.png">
 
 
 
@@ -481,9 +481,9 @@
 <h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><p>狭义的session表达的是HttpSession，是一个J2EE接口。<br>广义的session:即会话控制，众所周知，http协议是无状态的，对于同一个url请求并没有上下文关系，当用户完成登录之后需要有一个机制能够保存住用户的信息和状态，在后续的请求中能够验证用户的身份和检查用户的信息，这个依赖，就是会话控制。</p>
 <p>可以<strong>将session理解为一个key-value的机制</strong>。</p>
 <p>session中的关键点，第一是如何设置和获取key，另外一点就是如何能够保存和获取对应的value。</p>
-<p>从key的角度来看，会话会有两种常用的方式，即：<br><strong>sessionId和token</strong><br><strong>SessionId:</strong>客户端请求服务端时，服务端通过SetCookie就可以在http头中设置sessionId的key和对应的value值,而客户端的cookie会将其保存，后续请求中会自动带上.<br><strong>token:</strong>需要手动在http head头里或者url里设置token这个字段，服务器收到请求之后，再从head或url中取出token进行验证。<br><img src="https://i.imgur.com/vXQnzVe.png" alt><br><img src="https://i.imgur.com/78jtv2D.png" alt></p>
+<p>从key的角度来看，会话会有两种常用的方式，即：<br><strong>sessionId和token</strong><br><strong>SessionId:</strong>客户端请求服务端时，服务端通过SetCookie就可以在http头中设置sessionId的key和对应的value值,而客户端的cookie会将其保存，后续请求中会自动带上.<br><strong>token:</strong>需要手动在http head头里或者url里设置token这个字段，服务器收到请求之后，再从head或url中取出token进行验证。<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512221822.png" alt><br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512221835.png" alt></p>
 <p>无论是sessionId还是token，它们都是全局唯一的，一个用户一个标识，本质就是一个key，对应着一个value。</p>
-<p>  无论key或value，一方没有保持住， 就可能分辨不出用户的身份，获取不到用户的信息，如依赖sessionId时，用户进入了cookie，有可能造成系统不断的让其重新登录，value一方就可能保持不住，因为：分布式系统中的session问题：用户请求通过Nginx到达Tomcat，Tomcat部署一个应用，这时session是保存在这个Tomcat应用的内存中。<br>  那么当一个Tomcat扛不住时，考虑加多台Tomcat服务器，程序该怎么放？<br>  水平扩展（集群）或者垂直（拆分服务：A有类目商品和订单三个服务，分别部署到不同的服务器上，之后配置Nginx，负载均衡，这样单台服务器压力会小），或者综合。<br>  但是session问题依然存在，如：用户第一次访问A服务器，此时A使用了用户的session，接着用户做第二个请求，由于负载均衡，请求可能到了服务器A1，但是服务器A1上并没有用户的session信息，所以以为该用户没登录。<br>  通用方案：专门的服务保存session信息，其他服务使用session信息实都找他要。通常用redis集群或者主从复制去做的。开发测试时单机版即可。这样无论水平还是垂直， 任何一个应用都可以通过用户的唯一标识来找到用户对应的信息，从而进行后续操作。登录时设置好key，保存好这个用户的信息即value， 登出时让value失效即可。<br><img src="https://i.imgur.com/0LnLEIN.jpg" alt></p>
+<p>  无论key或value，一方没有保持住， 就可能分辨不出用户的身份，获取不到用户的信息，如依赖sessionId时，用户进入了cookie，有可能造成系统不断的让其重新登录，value一方就可能保持不住，因为：分布式系统中的session问题：用户请求通过Nginx到达Tomcat，Tomcat部署一个应用，这时session是保存在这个Tomcat应用的内存中。<br>  那么当一个Tomcat扛不住时，考虑加多台Tomcat服务器，程序该怎么放？<br>  水平扩展（集群）或者垂直（拆分服务：A有类目商品和订单三个服务，分别部署到不同的服务器上，之后配置Nginx，负载均衡，这样单台服务器压力会小），或者综合。<br>  但是session问题依然存在，如：用户第一次访问A服务器，此时A使用了用户的session，接着用户做第二个请求，由于负载均衡，请求可能到了服务器A1，但是服务器A1上并没有用户的session信息，所以以为该用户没登录。<br>  通用方案：专门的服务保存session信息，其他服务使用session信息实都找他要。通常用redis集群或者主从复制去做的。开发测试时单机版即可。这样无论水平还是垂直， 任何一个应用都可以通过用户的唯一标识来找到用户对应的信息，从而进行后续操作。登录时设置好key，保存好这个用户的信息即value， 登出时让value失效即可。<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512221849.png" alt></p>
 
       
     </div>
@@ -678,7 +678,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -823,7 +823,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共56.2k字</span>
+  <span class="post-count">博客全站共54.0k字</span>
 </div>
 
         
