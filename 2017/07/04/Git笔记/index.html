@@ -100,20 +100,20 @@
 <meta property="og:site_name" content="Cong&#39;s Blog">
 <meta property="og:description" content="Git,是一个分布式版本控制系统。初始化一个Git仓库：1git init 添加文件到Git仓库，分两步：第一步:1git add &amp;lt;file&amp;gt; ，注意，可反复多次使用，添加多个文件；添加所有文件：1git add . 第二步:1git commit -m&amp;quot;注释内容&amp;quot; ，完成。 查看工作区状态：1git status 查看修改内容：1git diff &amp;lt;f">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/fZfgitH.png">
-<meta property="og:image" content="https://i.imgur.com/gIPBWzc.png">
-<meta property="og:image" content="https://i.imgur.com/TSDBds1.png">
-<meta property="og:image" content="https://i.imgur.com/bg2F6mE.png">
-<meta property="og:image" content="https://i.imgur.com/ndVNQoJ.png">
-<meta property="og:image" content="https://i.imgur.com/ax3Ztr9.png">
-<meta property="og:image" content="https://i.imgur.com/HSmCMml.png">
-<meta property="og:image" content="https://i.imgur.com/VmUaw8U.png">
-<meta property="og:image" content="https://i.imgur.com/LeZRE8i.png">
-<meta property="og:updated_time" content="2019-05-12T11:28:29.677Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215110.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215353.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215421.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215447.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215520.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215545.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215558.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215619.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215749.png">
+<meta property="og:updated_time" content="2019-05-12T13:58:23.711Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git笔记">
 <meta name="twitter:description" content="Git,是一个分布式版本控制系统。初始化一个Git仓库：1git init 添加文件到Git仓库，分两步：第一步:1git add &amp;lt;file&amp;gt; ，注意，可反复多次使用，添加多个文件；添加所有文件：1git add . 第二步:1git commit -m&amp;quot;注释内容&amp;quot; ，完成。 查看工作区状态：1git status 查看修改内容：1git diff &amp;lt;f">
-<meta name="twitter:image" content="https://i.imgur.com/fZfgitH.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Congboss/images/master/20190512215110.png">
 
 
 
@@ -500,17 +500,17 @@
 <p>实际上是将master分支推送到远程仓库上，-u是将本地仓库和远程仓库关联起来了。<br>之后操作的话只需：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
 <p>命令即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin &lt;本地分支名字&gt;:&lt;远程分支名字&gt;</span><br></pre></td></tr></table></figure></p>
 <h2 id="克隆远程仓库："><a href="#克隆远程仓库：" class="headerlink" title="克隆远程仓库："></a>克隆远程仓库：</h2><p>使用命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:&lt;username&gt;/&lt;file&gt;.git</span><br></pre></td></tr></table></figure></p>
-<h1 id="分支："><a href="#分支：" class="headerlink" title="分支："></a>分支：</h1><p><img src="https://i.imgur.com/fZfgitH.png" alt></p>
-<p>当我们创建新的分支，例如dev时，Git新建了一个指针叫dev，指向master相同的提交，再把HEAD指向dev，就表示当前分支在dev上：<br><img src="https://i.imgur.com/gIPBWzc.png" alt></p>
-<p>Git创建一个分支很快，因为除了增加一个dev指针外，更改HEAD的指向，没有别的任何变化。<br>不过，从现在开始，对工作区的修改和提交就是针对dev分支了，比如新提交一次后，dev指针往前移动一步，而master指针不变：<br><img src="https://i.imgur.com/TSDBds1.png" alt><br>假如我们在dev上的工作完成了，就可以把dev合并到master上。Git怎么合并呢？最简单的方法，就是直接把master指向dev的当前提交，就完成了合并：<br><img src="https://i.imgur.com/bg2F6mE.png" alt><br>合并完分支后，可以删除dev分支。删除dev分支就是把dev指针给删掉，删掉后，就剩下了一条master分支：<br><img src="https://i.imgur.com/ndVNQoJ.png" alt><br>查看分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure></p>
+<h1 id="分支："><a href="#分支：" class="headerlink" title="分支："></a>分支：</h1><p><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215110.png" alt></p>
+<p>当我们创建新的分支，例如dev时，Git新建了一个指针叫dev，指向master相同的提交，再把HEAD指向dev，就表示当前分支在dev上：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215353.png" alt></p>
+<p>Git创建一个分支很快，因为除了增加一个dev指针外，更改HEAD的指向，没有别的任何变化。<br>不过，从现在开始，对工作区的修改和提交就是针对dev分支了，比如新提交一次后，dev指针往前移动一步，而master指针不变：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215421.png" alt><br>假如我们在dev上的工作完成了，就可以把dev合并到master上。Git怎么合并呢？最简单的方法，就是直接把master指向dev的当前提交，就完成了合并：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215447.png" alt><br>合并完分支后，可以删除dev分支。删除dev分支就是把dev指针给删掉，删掉后，就剩下了一条master分支：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215520.png" alt><br>查看分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure></p>
 <p>创建分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;name&gt;</span><br></pre></td></tr></table></figure></p>
 <p>切换分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;name&gt;</span><br></pre></td></tr></table></figure></p>
 <p>创建+切换分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;name&gt;</span><br></pre></td></tr></table></figure></p>
 <p>合并某分支到当前分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;name&gt;</span><br></pre></td></tr></table></figure></p>
 <p>删除分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d &lt;name&gt;</span><br></pre></td></tr></table></figure></p>
-<h2 id="解决冲突："><a href="#解决冲突：" class="headerlink" title="解决冲突："></a>解决冲突：</h2><p>假设再建立一个新的分支feature1，然后master分支和feature1分支都有提交，Git将无法实行合并。<br><img src="https://i.imgur.com/ax3Ztr9.png" alt><br>需要手动修改解决冲突，再合并。<br><img src="https://i.imgur.com/HSmCMml.png" alt><br>查看分支合并图：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --graph</span><br></pre></td></tr></table></figure></p>
+<h2 id="解决冲突："><a href="#解决冲突：" class="headerlink" title="解决冲突："></a>解决冲突：</h2><p>假设再建立一个新的分支feature1，然后master分支和feature1分支都有提交，Git将无法实行合并。<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215545.png" alt><br>需要手动修改解决冲突，再合并。<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215558.png" alt><br>查看分支合并图：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --graph</span><br></pre></td></tr></table></figure></p>
 <h2 id="分支管理："><a href="#分支管理：" class="headerlink" title="分支管理："></a>分支管理：</h2><p>合并分支时，如果可以，一般选择fast forward的方式，但是这样再删除分支后，将丢失分支信息。<br>可以强制禁用ff方式，Git将再merge时形成一个新的commit，这样从分支历史上就可以看出分支信息。<br>新建dev分支。<br>准备合并dev分支，请注意–no-ff参数，表示禁用Fast forward：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge --no-ff -m &quot;merge with no-ff&quot; dev</span><br></pre></td></tr></table></figure></p>
-<p>不使用ff模式，merge后就是这样：<br><img src="https://i.imgur.com/VmUaw8U.png" alt><br>正常工作情况：<br><img src="https://i.imgur.com/LeZRE8i.png" alt></p>
+<p>不使用ff模式，merge后就是这样：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215619.png" alt><br>正常工作情况：<br><img src="https://raw.githubusercontent.com/Congboss/images/master/20190512215749.png" alt></p>
 <h2 id="bug分支："><a href="#bug分支：" class="headerlink" title="bug分支："></a>bug分支：</h2><p>修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；</p>
 <p>当手头工作没有完成时，先把工作现场<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br></pre></td></tr></table></figure></p>
 <p>一下，然后去修复bug，修复后，再<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash pop</span><br></pre></td></tr></table></figure></p>
@@ -555,7 +555,7 @@
   <p><span>本文标题:</span><a href="/2017/07/04/Git笔记/">Git笔记</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 钱聪 的个人博客">钱聪</a></p>
   <p><span>发布时间:</span>2017年07月04日 - 11:07</p>
-  <p><span>最后更新:</span>2019年05月12日 - 19:05</p>
+  <p><span>最后更新:</span>2019年05月12日 - 21:05</p>
   <p><span>原始链接:</span><a href="/2017/07/04/Git笔记/" title="Git笔记">http://www.congboss.top/2017/07/04/Git笔记/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://www.congboss.top/2017/07/04/Git笔记/" aria-label="复制成功！"></i></span>
   </p>
@@ -775,7 +775,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -786,7 +786,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
