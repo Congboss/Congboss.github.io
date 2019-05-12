@@ -95,14 +95,14 @@
 <meta name="description" content="You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent house">
 <meta name="keywords" content="算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="house Robber(打家劫舍)">
+<meta property="og:title" content="House Robber(打家劫舍)">
 <meta property="og:url" content="http://www.congboss.top/2018/02/10/House Robber/index.html">
 <meta property="og:site_name" content="Cong&#39;s Blog">
 <meta property="og:description" content="You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent house">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-26T13:12:10.421Z">
+<meta property="og:updated_time" content="2019-05-12T09:38:00.905Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="house Robber(打家劫舍)">
+<meta name="twitter:title" content="House Robber(打家劫舍)">
 <meta name="twitter:description" content="You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent house">
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <title> house Robber(打家劫舍) | Cong's Blog </title>
+  <title> House Robber(打家劫舍) | Cong's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -360,7 +360,7 @@
             
             
               
-                house Robber(打家劫舍)
+                House Robber(打家劫舍)
               
             
           </h1>
@@ -426,7 +426,7 @@
 
           
           
-             <span id="/2018/02/10/House Robber/" class="leancloud_visitors" data-flag-title="house Robber(打家劫舍)">
+             <span id="/2018/02/10/House Robber/" class="leancloud_visitors" data-flag-title="House Robber(打家劫舍)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -457,7 +457,7 @@
 
       
         <p>You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.</p>
-<p>Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">     Map&lt;Integer,Integer&gt; cache=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">robbot</span><span class="params">(<span class="keyword">int</span> index,<span class="keyword">int</span> [] nums)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(index&gt;=nums.length)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">           <span class="keyword">if</span>(cache.containsKey(index))</span><br><span class="line">               <span class="keyword">return</span> cache.get(index);</span><br><span class="line">        <span class="keyword">int</span> a=nums[index]+robbot(index+<span class="number">2</span>,nums);</span><br><span class="line">        <span class="keyword">int</span> b=<span class="number">0</span>+robbot(index+<span class="number">1</span>,nums);</span><br><span class="line">          <span class="keyword">int</span> c=Math.max(a,b);</span><br><span class="line">          cache.put(index,c);</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">      cache.clear();<span class="comment">//不要忘记写</span></span><br><span class="line">       <span class="keyword">if</span>(nums.length==<span class="number">0</span>)</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">return</span> robbot(<span class="number">0</span>,nums);</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">     Map&lt;Integer,Integer&gt; cache=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">robbot</span><span class="params">(<span class="keyword">int</span> index,<span class="keyword">int</span> [] nums)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(index&gt;=nums.length)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">           <span class="keyword">if</span>(cache.containsKey(index))</span><br><span class="line">               <span class="keyword">return</span> cache.get(index);</span><br><span class="line">        <span class="keyword">int</span> a=nums[index]+robbot(index+<span class="number">2</span>,nums);</span><br><span class="line">        <span class="keyword">int</span> b=<span class="number">0</span>+robbot(index+<span class="number">1</span>,nums);</span><br><span class="line">          <span class="keyword">int</span> c=Math.max(a,b);</span><br><span class="line">          cache.put(index,c);</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">      cache.clear();<span class="comment">//不要忘记写</span></span><br><span class="line">       <span class="keyword">if</span>(nums.length==<span class="number">0</span>)</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">return</span> robbot(<span class="number">0</span>,nums);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -643,7 +643,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -654,7 +654,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -772,7 +772,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共66.1k字</span>
+  <span class="post-count">博客全站共56.2k字</span>
 </div>
 
         
