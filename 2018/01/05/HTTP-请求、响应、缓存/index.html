@@ -1,0 +1,1456 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<meta name="google-site-verification" content="hCL9xwePxdX4R20_QsZodsiX7aEOzZENXR5JmMtlYl0">
+<meta name="baidu-site-verification" content="ixPaa8a2Dd">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="计算机网络,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Cong's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="HTTP请求格式做过Socket编程的人都知道，当我们设计一个通信协议时，“消息头/消息体”的分割方式是很常用的，消息头告诉对方这个消息是干什么的，消息体告诉对方怎么干。HTTP协议传输的消息也是这样规定的，每一个HTTP包都分为HTTP头和HTTP体两部分，消息体是可选的，而消息头是必须的。每当我们打开一个网页，在上面点击右键，选择“查看源文件”，这时看到的HTML代码就是HTTP的消息体，那">
+<meta name="keywords" content="计算机网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP-请求、响应、缓存">
+<meta property="og:url" content="http://www.congboss.top/2018/01/05/HTTP-请求、响应、缓存/index.html">
+<meta property="og:site_name" content="Cong&#39;s Blog">
+<meta property="og:description" content="HTTP请求格式做过Socket编程的人都知道，当我们设计一个通信协议时，“消息头/消息体”的分割方式是很常用的，消息头告诉对方这个消息是干什么的，消息体告诉对方怎么干。HTTP协议传输的消息也是这样规定的，每一个HTTP包都分为HTTP头和HTTP体两部分，消息体是可选的，而消息头是必须的。每当我们打开一个网页，在上面点击右键，选择“查看源文件”，这时看到的HTML代码就是HTTP的消息体，那">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/Ex6FMZH.png">
+<meta property="og:image" content="https://i.imgur.com/b27PQyK.jpg">
+<meta property="og:updated_time" content="2018-08-04T17:17:06.655Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP-请求、响应、缓存">
+<meta name="twitter:description" content="HTTP请求格式做过Socket编程的人都知道，当我们设计一个通信协议时，“消息头/消息体”的分割方式是很常用的，消息头告诉对方这个消息是干什么的，消息体告诉对方怎么干。HTTP协议传输的消息也是这样规定的，每一个HTTP包都分为HTTP头和HTTP体两部分，消息体是可选的，而消息头是必须的。每当我们打开一个网页，在上面点击右键，选择“查看源文件”，这时看到的HTML代码就是HTTP的消息体，那">
+<meta name="twitter:image" content="https://i.imgur.com/Ex6FMZH.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.congboss.top/2018/01/05/HTTP-请求、响应、缓存/">
+
+
+
+
+
+  <title> HTTP-请求、响应、缓存 | Cong's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e53411fd0de39d0c39a67bb7beba6aab";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/Congboss"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cong's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不喜正式的交谈</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-photos">
+          <a href="/photos" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-camera"></i> <br>
+            
+            相册
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.congboss.top/2018/01/05/HTTP-请求、响应、缓存/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="钱聪">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                HTTP-请求、响应、缓存
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T14:49:23+08:00">
+                2018-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/01/05/HTTP-请求、响应、缓存/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/01/05/HTTP-请求、响应、缓存/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2018/01/05/HTTP-请求、响应、缓存/" class="leancloud_visitors" data-flag-title="HTTP-请求、响应、缓存">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+				 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li><h1 id="HTTP请求格式"><a href="#HTTP请求格式" class="headerlink" title="HTTP请求格式"></a>HTTP请求格式</h1>做过Socket编程的人都知道，当我们设计一个通信协议时，“消息头/消息体”的分割方式是很常用的，消息头告诉对方这个消息是干什么的，消息体告诉对方怎么干。HTTP协议传输的消息也是这样规定的，每一个HTTP包都分为HTTP头和HTTP体两部分，消息体是可选的，而消息头是必须的。每当我们打开一个网页，在上面点击右键，选择“查看源文件”，这时看到的HTML代码就是HTTP的消息体，那么消息头可以通过浏览器的开发工具或者插件可以看到，如果火狐的Firebug，IE的Httpwatch。<a id="more"></a>
+客户端通过发送 HTTP 请求向服务器请求对资源的访问。 它向服务器传递了一个数据块，也就是请求信息，HTTP 请求由三部分组成：请求行、  请求头和请求正文。</li>
+</ol>
+<ul>
+<li><strong>请求行</strong>：请求方法 URI 协议/版本</li>
+<li><strong>请求头</strong>(Request Header)</li>
+<li><strong>请求正文</strong></li>
+</ul>
+<p>下面是一个HTTP请求的数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST /index.php HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:10.0.2) Gecko/20100101 Firefox/10.0.2</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-cn,zh;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Referer: http://localhost/</span><br><span class="line">Content-Length：25</span><br><span class="line">Content-Type：application/x-www-form-urlencoded</span><br><span class="line"> </span><br><span class="line">username=aa&amp;password=1234</span><br></pre></td></tr></table></figure></p>
+<h2 id="1、请求行：请求方法URI协议-版本"><a href="#1、请求行：请求方法URI协议-版本" class="headerlink" title="1、请求行：请求方法URI协议/版本"></a>1、请求行：请求方法URI协议/版本</h2><p>请求的第一行是“方法 URL  协议/版本”，并以 回车换行作为结尾。请求行以空格分隔。格式如下：<br>POST /index.php HTTP/1.1<br>以上代码中“GET”代表请求方法，“//ndex.php”表示URI，“HTTP/1.1代表协议和协议的版本。<br>根据HTTP标准，HTTP请求可以使用多种请求方法。例如：HTTP1.1支持7种请求方法：GET、POST、HEAD、OPTIONS、PUT、DELETE和TARCE。在Internet应用中，最常用的方法是GET和POST。<br>URL完整地指定了要访问的网络资源，通常只要给出相对于服务器的根目录的相对目录即可，因此总是以“/”开头，最后，协议版本声明了通信过程中使用HTTP的版本。 </p>
+<p><strong>请求方法</strong><br>在 HTTP 协议中，HTTP 请求可以使用多种请求方法，这些方法指明了要以何种方式来访问 Request-URI 所标识的资源。HTTP1.1 支持的请求方法如下表所示：</p>
+<p>HTTP1.1 中的请求方式：<br><img src="https://i.imgur.com/Ex6FMZH.png" alt></p>
+<p>重点介绍 GET、POST 和 HEAD 三个方法：</p>
+<p><strong>（1）GET</strong></p>
+<p> GET 方法用于获取由 Request-URI 所标识的资源的信息，常见的形式是：</p>
+<p> GET Request-URI HTTP/1.1<br> GET方法是默认的HTTP请求方法，例如当我们通过在浏览器的地址栏中直接输入网址的方式去访问网页的时候，浏览器采用的就是 GET 方法向服务器获取资源。</p>
+<p>我们可以使用GET方法来提交表单数据，用GET方法提交的表单数据只经过了简单的编码，同时它将作为URL的一部分向服务器发送，因此，如果使用GET方法来提交表单数据就存在着安全隐患上。例如：<br> <a href="Http://localhost/login.php?username=aa&amp;password=1234" target="_blank" rel="noopener">Http://localhost/login.php?username=aa&amp;password=1234</a></p>
+<p>从上面的URL请求中，很容易就可以辩认出表单提交的内容。（？之后的内容）另外由于GET方法提交的数据是作为URL请求的一部分所以提交的数据量不能太大。这是因为浏览器对url的长度有限制</p>
+<p>各种浏览器也会对url的长度有所限制，下面是几种常见浏览器的url长度限制:(单位:字符)</p>
+<p>IE : 2803<br>Firefox:65536<br>Chrome:8182<br>Safari:80000<br>Opera:190000<br><strong>（2）POST</strong></p>
+<p> POST方法是GET方法的一个替代方法，它主要是向Web服务器提交表单数据，尤其是大批量的数据。 在请求头信息结束之后的两个回车换行之后（实际是空一行），就是表单提交的数据。如上面提到的post表单数据：</p>
+<p>username=aa&amp;password=1234</p>
+<p>POST方法克服了GET方法的一些缺点。通过POST方法提交表单数据时，数据不是作为URL请求的一部分而是作为标准数据传送给Web服务器，这就克服了GET方法中的信息无法保密和数据量太小的缺点。因此，出于安全的考虑以及对用户隐私的尊重，通常表单提交时采用POST方法。</p>
+<p>从编程的角度来讲，如果用户通过GET方法提交数据，则数据存放在QUERY＿STRING环境变量中，而POST方法提交的数据则可以从标准输入流中获取。</p>
+<p><strong> GET与POST方法有以下区别：</strong></p>
+<p>1、在客户端，Get方式在通过URL提交数据，数据在URL中可以看到；POST方式，数据放在HTTP包的body中。</p>
+<p>2、GET方式提交的数据大小有限制（因为浏览器对URL的长度有限制），而POST则没有此限制。</p>
+<p>3、安全性问题。正如在（1）中提到，使用 Get 的时候，参数会显示在地址栏上，而 Post 不会。所以，如果这些数据是中文数据而且是非敏感数据，那么使用 get；如果用户输入的数据不是中文字符而且包含敏感数据，那么还是使用 post为好。<br>4、服务器取值方式不一样。GET方式取值，如php可以使用$_GET来取得变量的值，而POST方式通过$_POST来获取变量的值。</p>
+<p><strong>（3）HEAD</strong></p>
+<p>HEAD 方法与 GET 方法几乎是相同的，它们的区别在于 HEAD 方法只是请求消息报头，而不是完整的内容。对于 HEAD 请求的回应部分来说，它的 HTTP 头部中包含的信息与通过 GET 请求所得到的信息是相同的。利用这个方法，不必传输整个资源内容，就可以得到 Request-URI 所标识的资源的信息。这个方法通常被用于测试超链接的有效性，是否可以访问，以及最近是否更新。</p>
+<p>要注意的是，在 HTML 文档中，书写 get 和 post，大小写都可以，但在 HTTP 协议中的 GET 和 POST 只能是大写形式。</p>
+<ol start="2">
+<li>请求头</li>
+</ol>
+<hr>
+<p>每个头域由一个域名，冒号（:）和域值三部分组成。域名是大小写无关的，域值前可以添加任何数量的空格符，头域可以被扩展为多行，在每行开始处，使用至少一个空格或制表符。</p>
+<p>HTTP最常见的请求头如下：</p>
+<h3 id="Transport-头域"><a href="#Transport-头域" class="headerlink" title="Transport 头域"></a>Transport 头域</h3><blockquote>
+<p><strong>Connection：</strong></p>
+<p>作用：表示是否需要持久连接。</p>
+<p>如果服务器看到这里的值为“Keep-Alive”，或者看到请求使用的是HTTP 1.1（HTTP 1.1默认进行持久连接）,它就可以利用持久连接的优点，当页面包含多个元素时（例如Applet，图片），显著地减少下载所需要的时间。要实现这一点，服务器需要在应答中发送一个Content-Length头，最简单的实现方法是：先把内容写入 ByteArrayOutputStream，然后在正式写出内容之前计算它的大小；</p>
+<p>例如：　Connection: keep-alive   当一个网页打开完成后，客户端和服务器之间用于传输HTTP数据的TCP连接不会关闭，如果客户端再次访问这个服务器上的  网页，会继续使用这一条已经建立的连接</p>
+<p>例如：  Connection: close  代表一个Request完成后，客户端和服务器之间用于传输HTTP数据的TCP连接会关闭，  当客户端再次发送Request，需要重新建立TCP连接。</p>
+<p><strong>Host（发送请求时，该报头域是必需的）</strong></p>
+<p>Host请求报头域主要用于指定被请求资源的Internet主机和端口号，它通常从HTTP URL中提取出来的。</p>
+<p>eg：http://；localhost/index.html<br>浏览器发送的请求消息中，就会包含Host请求报头域，如下：<br>Host：localhost</p>
+<p>此处使用缺省端口号80，若指定了端口号8080，则变成：Host：localhost:8080</p>
+</blockquote>
+<h3 id="Client-头域"><a href="#Client-头域" class="headerlink" title="Client 头域"></a>Client 头域</h3><blockquote>
+<p><strong>Accept：</strong></p>
+<p>作用：浏览器可以接受的媒体类型（MIME类型）,</p>
+<p>例如：  Accept: text/html  代表浏览器可以接受服务器回发的类型为 text/html  也就是我们常说的html文档, 如果服务器无法返回text/html类型的数据，服务器应该返回一个406错误(non acceptable)。</p>
+<p>通配符 <em> 代表任意类型。例如  Accept: </em>/*  代表浏览器可以处理所有类型，(一般浏览器发给服务器都是发这个)</p>
+<p><strong>Accept-Encoding：</strong></p>
+<p>作用： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩，支持什么压缩方法（gzip，deflate），（注意：这不是只字符编码）;</p>
+<p>例如： Accept-Encoding: gzip, deflate。Server能够向支持gzip/deflate的浏览器返回经gzip或者deflate编码的HTML页面。 许多情形下这可以减少5到10倍的下载时间，也节省带宽。</p>
+<p><strong>Accept-Language：</strong></p>
+<p>作用： 浏览器申明自己接收的语言。 </p>
+<p>语言跟字符集的区别：中文是语言，中文有多种字符集，比如big5，gb2312，gbk等等；</p>
+<p>例如： Accept-Language:zh-cn 。如果请求消息中没有设置这个报头域，服务器假定客户端对各种语言都可以接受。</p>
+<p><strong>User-Agent：</strong></p>
+<p>作用：告诉HTTP服务器， 客户端使用的操作系统和浏览器的名称和版本.</p>
+<p>我们上网登陆论坛的时候，往往会看到一些欢迎信息，其中列出了你的操作系统的名称和版本，你所使用的浏览器的名称和版本，这往往让很多人感到很神奇，实际上， 服务器应用程序就是从User-Agent这个请求报头域中获取到这些信息User-Agent请求报头域允许客户端将它的操作系统、浏览器和其它属性告诉服务器。</p>
+<p>例如： User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; CIBA; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C; InfoPath.2; .NET4.0E)</p>
+<p><strong>Accept-Charset：</strong></p>
+<p>作用：浏览器申明自己接收的字符集，这就是本文前面介绍的各种字符集和字符编码，如gb2312，utf-8（通常我们说Charset包括了相应的字符编码方案）；</p>
+<p>例如：Accept-Charset:iso-8859-1,gb2312.如果在请求消息中没有设置这个域，缺省是任何字符集都可以接受。</p>
+<p>Authorization：授权信息，通常出现在对服务器发送的WWW-Authenticate头的应答中；</p>
+<p>Authorization请求报头域主要用于证明客户端有权查看某个资源。当浏览器访问一个页面时，如果收到服务器的响应代码为401（未授权），可以发送一个包含Authorization请求报头域的请求，要求服务器对其进行验证。</p>
+</blockquote>
+<h3 id="Cookie-Login-头域"><a href="#Cookie-Login-头域" class="headerlink" title="Cookie/Login 头域"></a>Cookie/Login 头域</h3><blockquote>
+<p><strong>Cookie:</strong></p>
+<p>作用： 最重要的header, 将cookie的值发送给HTTP 服务器</p>
+</blockquote>
+<h3 id="Entity头域"><a href="#Entity头域" class="headerlink" title="Entity头域"></a>Entity头域</h3><blockquote>
+<p><strong>Content-Length</strong></p>
+</blockquote>
+<blockquote>
+<p>作用：发送给HTTP服务器数据的长度。即请求消息正文的长度；</p>
+<p>例如： Content-Length: 38</p>
+<p><strong>Content-Type：</strong></p>
+<p>作用：</p>
+<p>例如：Content-Type: application/x-www-form-urlencoded</p>
+</blockquote>
+<h3 id="Miscellaneous-头域"><a href="#Miscellaneous-头域" class="headerlink" title="Miscellaneous 头域"></a>Miscellaneous 头域</h3><blockquote>
+<p><strong>Referer:</strong></p>
+<p>作用： 提供了Request的上下文信息的服务器，告诉服务器我是从哪个链接过来的，比如从我主页上链接到一个朋友那里， 他的服务器就能够从HTTP Referer中统计出每天有多少用户点击我主页上的链接访问    他的网站。</p>
+<p>例如: Referer:<a href="http://translate.google.cn/?hl=zh-cn&amp;tab=wT" target="_blank" rel="noopener">http://translate.google.cn/?hl=zh-cn&amp;tab=wT</a></p>
+</blockquote>
+<h3 id="Cache-头域"><a href="#Cache-头域" class="headerlink" title="Cache 头域"></a>Cache 头域</h3><blockquote>
+<p><strong>If-Modified-Since：</strong></p>
+<p>作用： 把浏览器端缓存页面的最后修改时间发送到服务器去，服务器会把这个时间与服务器上实际文件的最后修改时间进行对比。如果时间一致，那么返回304，客户端就直接使用本地缓存文件。如果时间不一致，就会返回200和新的文件内容。客户端接到之后，会丢弃旧文件，把新文件缓存起来，并显示在浏览器中。</p>
+<p>例如：If-Modified-Since: Thu, 09 Feb 2012 09:07:57 GMT。</p>
+<p><strong>If-None-Match：</strong></p>
+<p>作用: If-None-Match和ETag一起工作，工作原理是在HTTP Response中添加ETag信息。 当用户再次请求该资源时，将在HTTP Request 中加入If-None-Match信息(ETag的值)。如果服务器验证资源的ETag没有改变（该资源没有更新），将返回一个304状态告诉客户端使用本地缓存文件。否则将返回200状态和新的资源和Etag.  使用这样的机制将提高网站的性能</p>
+<p>例如: If-None-Match: “03f2b33c0bfcc1:0”</p>
+<p><strong>Pragma：</strong></p>
+<p>作用： 防止页面被缓存， 在HTTP/1.1版本中，它和Cache-Control:no-cache作用一模一样</p>
+<p>Pargma只有一个用法， 例如： Pragma: no-cache</p>
+<p>注意: 在HTTP/1.0版本中，只实现了Pragema:no-cache, 没有实现Cache-Control</p>
+<p><strong>Cache-Control：</strong></p>
+<p>作用: 这个是非常重要的规则。 这个用来指定Response-Request遵循的缓存机制。各个指令含义如下</p>
+<p>Cache-Control:Public   可以被任何缓存所缓存（）</p>
+<p>Cache-Control:Private     内容只缓存到私有缓存中</p>
+<p>Cache-Control:no-cache  所有内容都不会被缓存</p>
+</blockquote>
+<ol start="2">
+<li><h1 id="HTTP响应格式"><a href="#HTTP响应格式" class="headerlink" title="HTTP响应格式 "></a>HTTP响应格式 </h1>在接收和解释请求消息后，服务器会返回一个 HTTP 响应消息。与 HTTP 请求类似，HTTP 响应也是由三个部分组成，分别是：状态行、消息报头和响应正文。如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK Date: Sun, 17 Mar 2013 08:12:54 GMT Server: Apache/2.2.8 (Win32) PHP/5.2.5 X-Powered-By: PHP/5.2.5 Set-Cookie: PHPSESSID=c0huq7pdkmm5gg6osoe3mgjmm3; path=/ Expires: Thu, 19 Nov 1981 08:52:00 GMT Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0 Pragma: no-cache Content-Length: 4393 Keep-Alive: timeout=5, max=100 Connection: Keep-Alive Content-Type: text/html; charset=utf-8</span><br><span class="line">&lt;html&gt; </span><br><span class="line">&lt;head&gt; </span><br><span class="line">&lt;title&gt;</span><br><span class="line">HTTP响应示例</span><br><span class="line">&lt;title&gt; </span><br><span class="line">&lt;/head&gt;</span><br><span class="line"> &lt;body&gt; </span><br><span class="line">Hello HTTP! </span><br><span class="line">&lt;/body&gt;</span><br><span class="line"> &lt;/html&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="1、状态行"><a href="#1、状态行" class="headerlink" title="1、状态行"></a>1、状态行</h2><p>   状态行由协议版本、数字形式的状态代码，及相应的状态描述组成，各元素之间以空格分隔，结尾时回车换行符，格式如下：</p>
+<p>HTTP-Version Status-Code Reason-Phrase CRLF</p>
+<p>HTTP-Version 表示服务器 HTTP 协议的版本，Status-Code 表示服务器发回的响应代码，Reason-Phrase 表示状态代码的文本描述，CRLF 表示回车换行。例如：</p>
+<p>HTTP/1.1 200 OK (CRLF)</p>
+<p>状态代码与状态描述</p>
+<p>状态代码由 3 位数字组成， 表示请求是否被理解或被满足，状态描述给出了关于状态码的简短的文字描述。状态码的第一个数字定义了响应类别，后面两位数字没有具体分类。<strong>第一个数字有 5 种取值，如下所示</strong>。</p>
+<ul>
+<li><strong>1xx：指示信息——表示请求已经接受，继续处理</strong></li>
+<li><strong>2xx：成功——表示请求已经被成功接收、理解、接受。</strong></li>
+<li><strong>3xx：重定向——要完成请求必须进行更进一步的操作</strong></li>
+<li><strong>4xx：客户端错误——客户端请求有错误或请求无法实现</strong></li>
+<li><strong>5xx：服务器端错误——服务器未能实现合法的请求。</strong><br><strong>常见状态代码、状态描述、说明：<br>200 OK      //客户端请求成功</strong></li>
+</ul>
+<p><strong>303：</strong>重定向，即从原url重定向到新的url。 例如php 的hear函数header（”localtion:/index.php”）</p>
+<p><strong>400 Bad Request</strong>  //客户端请求有语法错误，不能被服务器所理解<br><strong>401 Unauthorized</strong> //请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用<br><strong>403 Forbidden</strong>  //服务器收到请求，但是拒绝提供服务，一般是服务器路径没有权限或者是其他权限相关问题<br><strong>404 Not Found</strong>  //请求资源不存在，eg：输入了错误的URL<br><strong>500 Internal Server Error</strong> //服务器发生不可预期的错误：一般来说，这个问题都会在服务器端的源代码出现错误时出现，比如出现死循环。</p>
+<p><strong>502 Bad Gateway</strong>//作为网关或者代理工作的服务器尝试执行请求时，从上游服务器接收到无效的响应。比如LNMP ,php-fpm没有启动就会报502错误。</p>
+<p><strong>503 Server Unavailable</strong>  //服务器当前不能处理客户端的请求，一段时间后可能恢复正常，比如java 容器部署war的时候，就出现503,<br>                                           或者是nginx处理的文件没有权限。</p>
+<p><strong>504 Gateway Time-out</strong>：作为网关或者代理工作的服务器尝试执行请求时，未能及时从上游服务器（URI标识出的服务器，例如HTTP、FTP、LDAP）或者辅助服务器（例如DNS）收到响应，比如nginx和php-fpm， php设置sleep（200），就会收到504 Gateway Time-out。注意：某些代理服务器在DNS查询超时时会返回400或者500错误</p>
+<h2 id="2、响应正文"><a href="#2、响应正文" class="headerlink" title="2、响应正文"></a>2、响应正文</h2><p>响应正文就是服务器返回的资源的内容，响应头和正文之间也必须用空行分隔。如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;HTTP响应示例&lt;title&gt;</span><br><span class="line">&lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">&lt;body&gt;</span></span><br><span class="line"><span class="regexp">Hello HTTP!</span></span><br><span class="line"><span class="regexp">&lt;/</span>body&gt;</span><br><span class="line">&lt;<span class="regexp">/html&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="3-、响应头信息"><a href="#3-、响应头信息" class="headerlink" title="3 、响应头信息"></a>3 、响应头信息</h2><p>HTTP最常见的响应头如下所示：</p>
+<h3 id="Cache头域"><a href="#Cache头域" class="headerlink" title="Cache头域"></a>Cache头域</h3><blockquote>
+<p><strong>Date：</strong></p>
+<p>作用：生成消息的具体时间和日期，即当前的GMT时间。</p>
+<p>例如：　Date: Sun, 17 Mar 2013 08:12:54 GMT</p>
+<p><strong>Expires：</strong></p>
+<p>作用: 浏览器会在指定过期时间内使用本地缓存，指明应该在什么时候认为文档已经过期，从而不再缓存它。</p>
+<p>例如: Expires: Thu, 19 Nov 1981 08:52:00 GMT　　</p>
+<p><strong>Vary</strong></p>
+<p>作用：</p>
+<p>例如: Vary: Accept-Encoding</p>
+</blockquote>
+<h3 id="Cookie-Login-头域-1"><a href="#Cookie-Login-头域-1" class="headerlink" title="Cookie/Login 头域"></a>Cookie/Login 头域</h3><blockquote>
+<p><strong>P3P</strong></p>
+<p>作用: 用于跨域设置Cookie, 这样可以解决iframe跨域访问cookie的问题</p>
+<p>例如: P3P: CP=CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR</p>
+<p><strong>Set-Cookie</strong></p>
+<p>作用： 非常重要的header, 用于把cookie 发送到客户端浏览器， 每一个写入cookie都会生成一个Set-Cookie.</p>
+<p>例如: Set-Cookie: PHPSESSID=c0huq7pdkmm5gg6osoe3mgjmm3; path=/</p>
+</blockquote>
+<h3 id="Entity实体头域："><a href="#Entity实体头域：" class="headerlink" title="Entity实体头域："></a>Entity实体头域：</h3><p><strong>实体内容的属性，包括实体信息类型，长度，压缩方法，最后一次修改时间，数据有效性等</strong></p>
+<blockquote>
+<p><strong>ETag：</strong></p>
+<p>作用:  和If-None-Match 配合使用。 （实例请看上节中If-None-Match的实例）</p>
+<p>例如: ETag: “03f2b33c0bfcc1:0”</p>
+<p><strong>Last-Modified：</strong></p>
+<p>作用： 用于指示资源的最后修改日期和时间。（实例请看上节的If-Modified-Since的实例）</p>
+<p>例如: Last-Modified: Wed, 21 Dec 2011 09:09:10 GMT</p>
+<p><strong>Content-Type：</strong></p>
+<p>作用：WEB服务器告诉浏览器自己响应的对象的类型和字符集,</p>
+<p>例如:</p>
+<pre><code>Content-Type: text/html; charset=utf-8
+</code></pre><p>　　Content-Type:text/html;charset=GB2312</p>
+<p>　　Content-Type: image/jpeg</p>
+<p><strong>Content-Length：</strong></p>
+<p>指明实体正文的长度，以字节方式存储的十进制数字来表示。在数据下行的过程中，Content-Length的方式要预先在服务器中缓存所有数据，然后所有数据再一股脑儿地发给客户端。</p>
+<p>　　例如: Content-Length: 19847</p>
+<p><strong>Content-Encoding：</strong></p>
+<p>作用：文档的编码（Encode）方法。一般是压缩方式。</p>
+<p>WEB服务器表明自己使用了什么压缩方法（gzip，deflate）压缩响应中的对象。利用gzip压缩文档能够显著地减少HTML文档的下载时间。</p>
+<p>例如：Content-Encoding：gzip</p>
+<p><strong>Content-Language：</strong></p>
+<p>作用： WEB服务器告诉浏览器自己响应的对象的语言者</p>
+<p>例如： Content-Language:da</p>
+</blockquote>
+<h3 id="Miscellaneous-头域-1"><a href="#Miscellaneous-头域-1" class="headerlink" title="Miscellaneous 头域"></a>Miscellaneous 头域</h3><blockquote>
+<p><strong>Server：</strong></p>
+<p>作用：指明HTTP服务器的软件信息</p>
+<p>例如:Apache/2.2.8 (Win32) PHP/5.2.5</p>
+<p><strong>X-Powered-By：</strong></p>
+<p>作用：表示网站是用什么技术开发的</p>
+<p>例如： X-Powered-By: PHP/5.2.5</p>
+</blockquote>
+<h3 id="Transport头域"><a href="#Transport头域" class="headerlink" title="Transport头域"></a>Transport头域</h3><blockquote>
+<p><strong>Connection：</strong></p>
+<p>例如：　Connection: keep-alive   当一个网页打开完成后，客户端和服务器之间用于传输HTTP数据的TCP连接不会关闭，如果客户端再次访问这个服务器上的网页，会继续使用这一条已经建立的连接</p>
+<p>例如：  Connection: close  代表一个Request完成后，客户端和服务器之间用于传输HTTP数据的TCP连接会关闭， 当客户端再次发送Request，需要重新建立TCP连接。</p>
+</blockquote>
+<h3 id="Location头域"><a href="#Location头域" class="headerlink" title="Location头域"></a>Location头域</h3><blockquote>
+<p><strong>Location：</strong></p>
+<p>作用： 用于重定向一个新的位置， 包含新的URL地址</p>
+<p>实例请看304状态实例</p>
+</blockquote>
+<p><strong>HTTP协议是无状态的和Connection: keep-alive的区别</strong><br>　　无状态是指协议对于事务处理没有记忆能力，服务器不知道客户端是什么状态。从另一方面讲，打开一个服务器上的网页和你之前打开这个服务器上的网页之间没有任何联系。</p>
+<p>　　HTTP是一个无状态的面向连接的协议，无状态不代表HTTP不能保持TCP连接，更不能代表HTTP使用的是UDP协议（无连接）。</p>
+<p>　　从HTTP/1.1起，默认都开启了Keep-Alive，保持连接特性，简单地说，当一个网页打开完成后，客户端和服务器之间用于传输HTTP数据的TCP连接不会关闭，如果客户端再次访问这个服务器上的网页，会继续使用这一条已经建立的连接。</p>
+<p>　　Keep-Alive不会永久保持连接，它有一个保持时间，可以在不同的服务器软件（如Apache）中设定这个时间。</p>
+<ol start="3">
+<li><h1 id="浏览器缓存"><a href="#浏览器缓存" class="headerlink" title="浏览器缓存 "></a>浏览器缓存 </h1>浏览器缓存：包括页面html缓存和图片js，css等资源的缓存。如下图，浏览器缓存是基于把页面信息保存到用户本地电脑硬盘里。<br>缓存的优点：<br>1）服务器响应更快：因为请求从缓存服务器（离客户端更近）而不是源服务器被相应，这个过程耗时更少，让服务器看上去响应更快。<br>2）减少网络带宽消耗：当副本被重用时会减低客户端的带宽消耗；客户可以节省带宽费用，控制带宽的需求的增长并更易于管理。<br>1、缓存工作原理</li>
+</ol>
+<hr>
+<p> 页面缓存状态是由http header决定的，一个浏览器请求信息，一个是服务器响应信息。主要包括Pragma: no-cache、Cache-Control、 Expires、 Last-Modified、If-Modified-Since。其中Pragma: no-cache由HTTP/1.0规定，Cache-Control由HTTP/1.1规定。</p>
+<p>工作原理图：<br>从图中我们可以看到原理主要分三步：</p>
+<ol>
+<li><p>第一次请求：浏览器通过http的header报头，附带Expires，Cache-Control，Last-Modified/Etag向服务器请求，此时服务器记录第一次请求的Last-Modified/Etag                  </p>
+</li>
+<li><p>再次请求：当浏览器再次请求的时候，请求头附带Expires，Cache-Control，If-Modified-Since/Etag向服务器请求</p>
+</li>
+<li><p>服务器根据第一次记录的Last-Modified/Etag和再次请求的If-Modified-Since/Etag做对比，判断是否需要更新，服务器通过这两个头判断本地资源未发生变化，客 户端不需要重新下载，返回304响应。常见流程如下图所示：<br><img src="https://i.imgur.com/b27PQyK.jpg" alt><br><strong>与缓存相关的HTTP扩展消息头</strong><br><strong> Expires：</strong>设置页面过期时间，格林威治时间GMT</p>
+</li>
+</ol>
+<p><strong>Cache-Control：</strong>更细致的控制缓存的内容</p>
+<p><strong>Last-Modified：</strong>请求对象最后一次的修改时间 用来判断缓存是否过期 通常由文件的时间信息产生 </p>
+<p><strong>ETag：</strong>响应中资源的校验值，在服务器上某个时段是唯一标识的。ETag是一个可以 与Web资源关联的记号（token），和Last-Modified功能才不多，也是一个标识符，一般和Last-Modified一起使用，加强服务器判断的准确度。</p>
+<p><strong>Date：</strong>服务器的时间</p>
+<p><strong>If-Modified-Since：</strong>客户端存取的该资源最后一次修改的时间，用来和服务器端的Last-Modified做比较</p>
+<p><strong>If-None-Match：</strong>客户端存取的该资源的检验值，同ETag。</p>
+<p>Cache-Control的主要参数<br>Cache-Control: private/public Public 响应会被缓存，并且在多用户间共享。 Private 响应只能够作为私有的缓存，不能再用户间共享。<br>Cache-Control: no-cache：不进行缓存<br>Cache-Control: max-age=x：缓存时间 以秒为单位<br>Cache-Control: must-revalidate：如果页面是过期的 则去服务器进行获取。</p>
+
+      
+    </div>
+<div>
+      
+        
+      
+</div>
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.png" alt="钱聪 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎交流学习。</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>么么！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatm.png" alt="钱聪 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.png" alt="钱聪 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"><i class="fa fa-tag"></i> 计算机网络</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/02/HTTP工作原理/" rel="next" title="HTTP工作原理">
+                <i class="fa fa-chevron-left"></i> HTTP工作原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/10/http1.0与http1.1区别/" rel="prev" title="http1.0与http1.1区别">
+                http1.0与http1.1区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="钱聪">
+          <p class="site-author-name" itemprop="name">钱聪</p>
+           
+              <p class="site-description motion-element" itemprop="description">To be a better me~</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Congboss" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/p/1005052918948235/home?from=page_100505&mod=TAB#place" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qian-cong-70/activities" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+		
+		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28987652&auto=0&height=66"></iframe>
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP请求格式"><span class="nav-number">1.</span> <span class="nav-text">HTTP请求格式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、请求行：请求方法URI协议-版本"><span class="nav-number">1.1.</span> <span class="nav-text">1、请求行：请求方法URI协议/版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Transport-头域"><span class="nav-number">1.1.1.</span> <span class="nav-text">Transport 头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-头域"><span class="nav-number">1.1.2.</span> <span class="nav-text">Client 头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie-Login-头域"><span class="nav-number">1.1.3.</span> <span class="nav-text">Cookie/Login 头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Entity头域"><span class="nav-number">1.1.4.</span> <span class="nav-text">Entity头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Miscellaneous-头域"><span class="nav-number">1.1.5.</span> <span class="nav-text">Miscellaneous 头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cache-头域"><span class="nav-number">1.1.6.</span> <span class="nav-text">Cache 头域</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP响应格式"><span class="nav-number">2.</span> <span class="nav-text">HTTP响应格式 </span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、状态行"><span class="nav-number">2.1.</span> <span class="nav-text">1、状态行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、响应正文"><span class="nav-number">2.2.</span> <span class="nav-text">2、响应正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-、响应头信息"><span class="nav-number">2.3.</span> <span class="nav-text">3 、响应头信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cache头域"><span class="nav-number">2.3.1.</span> <span class="nav-text">Cache头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie-Login-头域-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">Cookie/Login 头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Entity实体头域："><span class="nav-number">2.3.3.</span> <span class="nav-text">Entity实体头域：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Miscellaneous-头域-1"><span class="nav-number">2.3.4.</span> <span class="nav-text">Miscellaneous 头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transport头域"><span class="nav-number">2.3.5.</span> <span class="nav-text">Transport头域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Location头域"><span class="nav-number">2.3.6.</span> <span class="nav-text">Location头域</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浏览器缓存"><span class="nav-number">3.</span> <span class="nav-text">浏览器缓存 </span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">钱聪</span>
+</div>
+
+
+<!--<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+-->
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">
+&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;总访问量: <span id="busuanzi_value_site_pv"></span>
+</span>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共66.1k字</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cytjz84Kf';
+      var conf = '47957250293b7be5108d92f517e61a33';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("YbRQy7T0bF0y73I7WRKCPxGg-gzGzoHsz", "05XrRp0pdq9KDHU6tokqfO4X");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/wanko.model.json", 0.5);});
+})();
+</script>
+
+
+</body>
+</html>
