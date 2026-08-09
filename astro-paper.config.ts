@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://congboss.github.io/blog/",
+    url: "https://congboss.github.io/",
     title: "qiancong 的博客",
     description: "记录技术学习、代码实践与日常思考。",
     author: "qiancong",
@@ -24,7 +24,7 @@ export default defineAstroPaperConfig({
     showBackButton: true,
     editPost: {
       enabled: true,
-      url: "https://github.com/Congboss/blog/edit/main/",
+      url: "https://github.com/Congboss/Congboss.github.io/edit/main/",
     },
     search: "pagefind",
   },
