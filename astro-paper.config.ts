@@ -2,11 +2,11 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://yourname.github.io/blog/",
+    url: "https://congboss.github.io/blog/",
     title: "qiancong 的博客",
     description: "记录技术学习、代码实践与日常思考。",
     author: "qiancong",
-    profile: "https://github.com/yourname",
+    profile: "https://github.com/Congboss",
     ogImage: "default-og.jpg",
     lang: "zh-CN",
     timezone: "Asia/Shanghai",
@@ -24,12 +24,12 @@ export default defineAstroPaperConfig({
     showBackButton: true,
     editPost: {
       enabled: true,
-      url: "https://github.com/yourname/blog/edit/main/",
+      url: "https://github.com/Congboss/blog/edit/main/",
     },
     search: "pagefind",
   },
   socials: [
-    { name: "github", url: "https://github.com/yourname" },
+    { name: "github", url: "https://github.com/Congboss" },
   ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },
